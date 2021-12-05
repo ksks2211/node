@@ -1,5 +1,6 @@
-# __File System__
-  [path](#path) &nbsp; [fs](#fs)  &nbsp; [Buffer](#Buffer)
+# __File System & Stream & Buffer__
+  
+  __[path](#path) &nbsp; [fs](#fs)  &nbsp; [Buffer](#Buffer)__
 
 
 ## <a name="fs"></a>__fs__ (file system) 
