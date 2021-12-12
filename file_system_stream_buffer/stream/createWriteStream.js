@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 const writeStream = fs.createWriteStream('../file/writestream.txt', {
-  highWaterMark: 16,
+  highWaterMark: 18,
 })
 
 writeStream.on('finish', () => {
@@ -24,13 +24,29 @@ writeStream.on('close', () => {
   console.log('Closed')
 })
 
-writeStream.write('Write Stream 1\n')
-writeStream.write('write Stream 2\n', 'utf-8')
-writeStream.write('write Stream 3\n')
-writeStream.write('write Stream 4\n')
-writeStream.write('write Stream 5\n')
-writeStream.write('write Stream 6\n')
+writeStream.on('drain', () => {
+  console.log('Drain')
+})
 
-writeStream.end()
+let i = 0
+let ok = true
 
-console.log('-------Asynchronous--------')
+function write() {
+  do {
+    i++
+    if (i == 10) {
+      writeStream.write('Hello\n', () => {
+        console.log('finish')
+      })
+    } else {
+      ok = writeStream.write('Hello\n')
+      console.log(ok)
+    }
+  } while (i > 0 && ok)
+
+  if (i < 10) {
+    writeStream.once('drain', write)
+  }
+}
+
+write()
